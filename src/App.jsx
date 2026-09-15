@@ -6,6 +6,7 @@ import {
   ChevronRight, Moon, Sun, Star, ArrowRight
 } from 'lucide-react';
 import { Analytics } from '@vercel/analytics/react';
+import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 
 // Company Data
 const companyInfo = {
@@ -17,6 +18,32 @@ const companyInfo = {
   rcNumber: '1987912',
   whatsapp: '2348022969807',
   motto: 'Your satisfaction, our priority'
+};
+
+// Real URLs for each page, plus the title and description Google shows for it.
+const pageMeta = {
+  home: {
+    path: '/',
+    title: 'Extensive Janitorial Services Ltd | Cleaning & Fumigation in Abuja',
+    description: 'Professional janitorial services, post-construction cleaning, fumigation, derating and hygiene supplies in Abuja, Nigeria. Licensed, insured and available 24/7.'
+  },
+  supplies: {
+    path: '/supplies',
+    title: 'Cleaning Supplies & Toiletries | Extensive Janitorial Services Ltd',
+    description: 'Consistent supply of tissue, hand soaps, air fresheners and hygiene essentials for offices and businesses in Abuja, Nigeria.'
+  },
+  equipment: {
+    path: '/equipment',
+    title: 'Equipment Renting (Coming Soon) | Extensive Janitorial Services Ltd',
+    description: 'Professional cleaning equipment for rent in Abuja: scrubbers, vacuums, polishers and more. Coming soon from Extensive Janitorial Services Limited.'
+  }
+};
+
+const pathToPage = (pathname) => {
+  const clean = pathname.replace(/\/+$/, '').toLowerCase();
+  if (clean === '/supplies') return 'supplies';
+  if (clean === '/equipment') return 'equipment';
+  return 'home';
 };
 
 // Hero background slideshow. Drop four images in your public folder with these
@@ -116,7 +143,7 @@ const RevealOnScroll = ({ children }) => {
   );
 };
 
-export default function App() {
+function Site() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window === 'undefined') return false;
@@ -130,7 +157,9 @@ export default function App() {
     // OS setting. Their choice is remembered from the moment they toggle.
     return false;
   });
-  const [currentPage, setCurrentPage] = useState('home');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPage = pathToPage(location.pathname);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [quoteType, setQuoteType] = useState('service');
   
@@ -223,10 +252,24 @@ export default function App() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
   const navigateTo = (page) => {
-    setCurrentPage(page);
+    navigate(pageMeta[page] ? pageMeta[page].path : '/');
     setIsMenuOpen(false);
-    window.scrollTo(0, 0);
   };
+
+  // Keep the tab title and meta description in step with the route, and send
+  // the reader back to the top whenever the page changes.
+  useEffect(() => {
+    const meta = pageMeta[currentPage] || pageMeta.home;
+    document.title = meta.title;
+
+    const tag = document.querySelector('meta[name="description"]');
+    if (tag) tag.setAttribute('content', meta.description);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', `https://extensivejanitorials.com${meta.path}`);
+
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   const handleQuoteChange = (e) => setQuoteForm(prev => ({...prev, [e.target.name]: e.target.value}));
   const handleSupplyChange = (e) => setSupplyForm(prev => ({...prev, [e.target.name]: e.target.value}));
@@ -935,5 +978,13 @@ export default function App() {
 
       <Analytics />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Site />
+    </BrowserRouter>
   );
 }

@@ -5,6 +5,7 @@ import {
   Wind, ShoppingBag, Sofa, 
   ChevronRight, Moon, Sun, Star, ArrowRight
 } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Company Data
 const companyInfo = {
@@ -932,6 +933,7 @@ export default function App() {
         </div>
       )}
 
+      <Analytics />
     </div>
   );
 }

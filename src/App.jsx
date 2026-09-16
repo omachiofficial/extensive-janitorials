@@ -398,7 +398,19 @@ function Site() {
                 style={{
                   opacity: 0.5,
                   maskImage: 'linear-gradient(to bottom, #000 0%, #000 30%, rgba(0,0,0,0.35) 58%, transparent 88%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 30%, rgba(0,0,0,0.35) 58%, transparent 88%)'
+                  WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 30%, rgba(0,0,0,0.35) 58%, transparent 88%)',
+                  // Blur/saturate/brightness live here rather than on each image, so the
+                  // browser composites ONE layer instead of four. Raise the blur for more
+                  // frost. translateZ(0) forces the layer onto the GPU, which stops the
+                  // white repaint artifacts Android Chrome shows when a masked, blurred
+                  // stack gets repainted on tap or scroll.
+                  filter: 'blur(2.5px) saturate(1.15) brightness(0.85)',
+                  transform: 'translateZ(0)',
+                  WebkitTransform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  isolation: 'isolate',
+                  willChange: 'opacity'
                 }}
                 aria-hidden="true"
               >
@@ -410,13 +422,7 @@ function Site() {
                     loading={i === 0 ? 'eager' : 'lazy'}
                     decoding="async"
                     className={`absolute inset-0 w-full h-full object-cover object-center scale-105 sm:scale-110 transition-opacity ease-in-out ${i === heroIndex ? 'opacity-100' : 'opacity-0'}`}
-                    style={{
-                      transitionDuration: '1500ms',
-                      // Frosted-glass treatment. Raise the blur value for more frost,
-                      // lower it for a sharper photo. scale-110 above hides the soft
-                      // edges that blur leaves around the image border.
-                      filter: 'blur(2.5px) saturate(1.15) brightness(0.85)'
-                    }}
+                    style={{ transitionDuration: '1500ms', backfaceVisibility: 'hidden' }}
                     onError={(e) => { e.target.style.display = 'none'; }}
                   />
                 ))}

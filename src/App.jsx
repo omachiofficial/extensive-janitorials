@@ -24,18 +24,18 @@ const companyInfo = {
 const pageMeta = {
   home: {
     path: '/',
-    title: 'Extensive Janitorial Services Ltd | Cleaning & Fumigation in Abuja',
-    description: 'Professional janitorial services, post-construction cleaning, fumigation, derating and hygiene supplies in Abuja, Nigeria. Licensed, insured and available 24/7.'
+    title: 'Extensive Janitorial Services Ltd | Cleaning & Fumigation in Nigeria',
+    description: 'Professional janitorial services, post-construction cleaning, fumigation, derating and hygiene supplies across Nigeria. Licensed, insured and available 24/7.'
   },
   supplies: {
     path: '/supplies',
     title: 'Cleaning Supplies & Toiletries | Extensive Janitorial Services Ltd',
-    description: 'Consistent supply of tissue, hand soaps, air fresheners and hygiene essentials for offices and businesses in Abuja, Nigeria.'
+    description: 'Consistent supply of tissue, hand soaps, air fresheners and hygiene essentials for offices and businesses across Nigeria.'
   },
   equipment: {
     path: '/equipment',
     title: 'Equipment Renting (Coming Soon) | Extensive Janitorial Services Ltd',
-    description: 'Professional cleaning equipment for rent in Abuja: scrubbers, vacuums, polishers and more. Coming soon from Extensive Janitorial Services Limited.'
+    description: 'Professional cleaning equipment for rent across Nigeria: scrubbers, vacuums, polishers and more. Coming soon from Extensive Janitorial Services Limited.'
   }
 };
 

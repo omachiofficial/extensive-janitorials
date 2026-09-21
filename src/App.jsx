@@ -57,6 +57,10 @@ const telHref = (num) => {
   return digits.startsWith('0') ? `+234${digits.slice(1)}` : `+${digits}`;
 };
 
+// Google Maps link for the footer address. Opens the Maps app on phones.
+// Searches the mall rather than the unit number, which Maps can't resolve.
+const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Novare Gateway Mall, Lugbe, Abuja, Nigeria')}`;
+
 const servicesList = [
   { id: 1, title: 'Cleaning Services', icon: Droplets, image: 'service-cleaning.jpg', description: 'Comprehensive general cleaning for offices, malls, and homes.' },
   { id: 2, title: 'Post Construction Cleaning', icon: Briefcase, image: 'service-post-construction.jpg', description: 'Detailed cleanup for newly built or renovated sites.' },
@@ -784,25 +788,60 @@ function Site() {
 
               <div>
                 <h3 className="text-lg font-bold mb-6 text-white border-b border-gray-700 pb-2 inline-block">Contact Info</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3 text-gray-400">
-                    <MapPin className="w-5 h-5 text-[#60A5FA] shrink-0 mt-0.5" />
-                    <span className="leading-snug text-sm">{companyInfo.address}</span>
+                <ul className="space-y-2">
+                  {/* Address: opens Google Maps (the Maps app on phones) */}
+                  <li>
+                    <a
+                      href={mapsHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Open our office location in Google Maps"
+                      className="group flex items-start gap-3 -mx-2 px-2 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <MapPin className="w-5 h-5 text-[#60A5FA] shrink-0 mt-0.5 transition-transform group-hover:scale-110" />
+                      <span className="leading-snug text-sm">
+                        {companyInfo.address}
+                        <span className="block text-xs text-[#60A5FA] mt-1 group-hover:underline">Get directions</span>
+                      </span>
+                    </a>
                   </li>
-                  <li className="flex flex-col gap-2 text-gray-400">
-                    <div className="flex items-center gap-3 hover:text-white transition-colors">
-                      <Phone className="w-5 h-5 text-[#4ADE80] shrink-0" />
-                      <a href={`tel:${telHref(companyInfo.phone)}`} className="text-sm">{companyInfo.phone} <span className="text-xs text-gray-500">(Main Line)</span></a>
-                    </div>
-                    <div className="flex items-center gap-3 hover:text-white transition-colors">
-                      <div className="w-5 h-5 shrink-0"></div>
-                      <a href={`tel:${telHref(companyInfo.mdPhone)}`} className="text-sm">{companyInfo.mdPhone} <span className="text-xs text-gray-500">(MD)</span></a>
-                    </div>
+
+                  {/* Main line */}
+                  <li>
+                    <a
+                      href={`tel:${telHref(companyInfo.phone)}`}
+                      aria-label={`Call our main line, ${companyInfo.phone}`}
+                      className="group flex items-center gap-3 -mx-2 px-2 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <Phone className="w-5 h-5 text-[#4ADE80] shrink-0 transition-transform group-hover:scale-110" />
+                      <span className="text-sm">{companyInfo.phone} <span className="text-xs text-gray-500">(Main Line)</span></span>
+                    </a>
                   </li>
-                  <li className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
-                    <Mail className="w-5 h-5 text-[#FFEF03] shrink-0" />
-                    <a href={`mailto:${companyInfo.email}`} className="break-all text-sm">{companyInfo.email}</a>
+
+                  {/* MD */}
+                  <li>
+                    <a
+                      href={`tel:${telHref(companyInfo.mdPhone)}`}
+                      aria-label={`Call the Managing Director, ${companyInfo.mdPhone}`}
+                      className="group flex items-center gap-3 -mx-2 px-2 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <Phone className="w-5 h-5 text-[#4ADE80] shrink-0 transition-transform group-hover:scale-110" />
+                      <span className="text-sm">{companyInfo.mdPhone} <span className="text-xs text-gray-500">(MD)</span></span>
+                    </a>
                   </li>
+
+                  {/* Email */}
+                  <li>
+                    <a
+                      href={`mailto:${companyInfo.email}`}
+                      aria-label={`Email us at ${companyInfo.email}`}
+                      className="group flex items-center gap-3 -mx-2 px-2 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <Mail className="w-5 h-5 text-[#FFEF03] shrink-0 transition-transform group-hover:scale-110" />
+                      <span className="break-all text-sm">{companyInfo.email}</span>
+                    </a>
+                  </li>
+
                   <li className="flex items-start gap-3 text-gray-400 pt-2 border-t border-gray-800">
                     <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5">
                       <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
